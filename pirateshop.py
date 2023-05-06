@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
-#Comment out the line below if not on MacOSX
-from tkmacosx import Button, DictVar
+#Comment out the line below if not on MacOSX and change the names of the options 'bg' and 'fg' in the Button to 'background' and 'foreground'
+from tkmacosx import Button
 import tkinter.font as font
 
 def onFrameConfigure(canvas):
@@ -58,8 +58,6 @@ item_prices = {'Pegleg': '☩',
       
 cart = {}
 
-#item_count = sum([cart[key] for key in cart])
-
 canv = Canvas(w)
 f = Frame(canv)
 scroll = Scrollbar(w,orient='vertical',command = canv.yview)
@@ -88,7 +86,18 @@ viewCart = IntVar()
 emptyCart = IntVar()
 checkOut = IntVar()
 
-menub.menu.add_checkbutton (label = f'View Carrrt ({sum([cart[key] for key in cart])})', variable=viewCart)
+def cartview():
+    cartViewer = Toplevel()
+    cartViewer.title('Yer Carrrt')
+
+def cartempty():
+    pass
+    
+def checkout():
+    pass
+
+
+menub.menu.add_checkbutton (label = f'View Carrrt ({sum([cart[key] for key in cart])})', variable=viewCart, command=lambda:cartview())
 menub.menu.add_checkbutton (label = 'Empty Carrrt', variable=emptyCart)
 menub.menu.add_checkbutton (label = 'Checkout', variable=checkOut)
 
@@ -96,12 +105,10 @@ skull = PhotoImage(file='./piratestuff/btnskl.png')
 btnskull = skull.subsample(15,15)
 
 def addcart(item,q):
-    global cart
     if item in cart:
         cart[item] += q
     else:
         cart[item] = q
-    global cartMessage
     cartMessage.config(text='Ahoy! Yer Carrrt is Empty!' if sum([cart[key] for key in cart]) == 0 else 'Ahoy! Yer Carrrt Has One Item!' if sum([cart[key] for key in cart]) == 1 else f'Ahoy! Yer Carrrt Has {sum([cart[key] for key in cart])} Items!')
     menub.menu.entryconfigure(0,label = f'View Carrrt ({sum([cart[key] for key in cart])})', variable=emptyCart)
 
@@ -112,15 +119,16 @@ class forSale:
         self.row = ([key for key in item_prices].index(self.name) // 3) + 2
         self.col = [key for key in item_prices].index(self.name) % 3
     def place(self):
-        fra = Frame(f)
-        fra.grid(row = self.row, column = self.col)
+        fra = Frame(f, borderwidth=5, padding=10, relief=RIDGE)
+        fra.grid(row = self.row, column = self.col,pady=10)
         pic = PhotoImage(file=f"./piratestuff/{''.join((self.name).lower().split())}.png")
-        lab = Label(fra,text=f"{self.name} for only {self.price}")
+        lab = Label(fra,text=f"{self.name} for only {self.price}",relief=GROOVE,foreground='light goldenrod')
         lab['font'] = pirateFont8
         lab.pack()
         photo = Button(fra,height=320,width=320,image=pic)
         photo.pack()
-        quantity = Spinbox(fra, from_ = 0, to_ = 1000)
+        quantity = Spinbox(fra, from_ = 0, to_ = 99999)
+        quantity.insert(0,0)
         quantity.pack()
         butt = Button(fra,text = 'Add to Carrrt', bg='black', activebackground='yellow', cursor='pirate', fg='white', activeforeground='red', image=btnskull, compound = LEFT, command = lambda: addcart(self.name, int(quantity.get())))
         butt['font'] = pirateFont7
