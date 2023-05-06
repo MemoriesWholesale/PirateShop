@@ -132,7 +132,7 @@ class forSale:
         photo.pack()
         quantity = Spinbox(fra, from_ = 0, to_ = 1000)
         quantity.pack()
-        butt = Button(fra,text = 'Add to Carrrt', bg='black', activebackground='yellow', cursor='pirate', fg='white', activeforeground='red', image=btnskull, compound = LEFT, command = lambda: addcart(self.name,self.quantity.get()))
+        butt = Button(fra,text = 'Add to Carrrt', bg='black', activebackground='yellow', cursor='pirate', fg='white', activeforeground='red', image=btnskull, compound = LEFT, command = lambda: addcart(self.name, int(quantity.get())))
         butt['font'] = pirateFont7
         butt.pack()
 
