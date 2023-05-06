@@ -55,24 +55,32 @@ item_prices = {'Pegleg': '☩',
                'Brig': '☩',
                'Galleon': '☩'
                }
-
-#class Cart:
-#    def __init__:
-        
+      
 cart = {}
 
 item_count = sum([cart[key] for key in cart])
 
-welcomeMessage = Label(w,text='Welcome to the Pirate Shop!',font=pirateFont2)
+canv = Canvas(w)
+f = Frame(canv)
+scroll = Scrollbar(w,orient='vertical',command = canv.yview)
+canv.configure(yscrollcommand=scroll.set)
+scroll.pack(side="right", fill="y")
+canv.pack(side="left", fill="both", expand=True)
+canv.create_window((4,4), window=f, anchor="nw")
 
-welcome = LabelFrame(w, labelwidget=welcomeMessage)
-welcome.pack()
+f.bind("<Configure>", lambda event, canvas=canv: onFrameConfigure(canvas))
+
+
+welcomeMessage = Label(f,text='Welcome to the Pirate Shop!',font=pirateFont2)
+
+welcome = LabelFrame(f, labelwidget=welcomeMessage)
+welcome.grid(row=0,column=1)
 
 cartMessage = Label(welcome, border=5, padding=3, relief=RAISED, background='gold', font=pirateFont1, foreground='crimson', text='Ahoy! Yer Carrrt is Empty!' if item_count == 0 else 'Ahoy! Yer Carrrt Has One Item' if item_count == 1 else f'Ahoy! Yer Carrrt Has {item_count} Items!')
 cartMessage.pack()
 
-menub = Menubutton(w,text='Menu')
-menub.pack()
+menub = Menubutton(f,text='Menu')
+menub.grid(row=1,column=1)
 
 menub.menu = Menu(menub,tearoff=0,activeforeground='red')
 menub['menu'] = menub.menu
@@ -87,34 +95,37 @@ menub.menu.add_checkbutton (label = 'Empty Carrrt', variable=emptyCart)
 menub.menu.add_checkbutton (label = 'Checkout', variable=checkOut)
 
 
+
 skull = PhotoImage(file='./piratestuff/btnskl.png')
 btnskull = skull.subsample(15,15)
 
 
-canv = Canvas(w)
-f = Frame(canv)
-scroll = Scrollbar(w,orient='vertical',command = canv.yview)
-canv.configure(yscrollcommand=scroll.set)
-scroll.pack(side="right", fill="y")
-canv.pack(side="left", fill="both", expand=True)
-canv.create_window((4,4), window=f, anchor="nw")
-
-f.bind("<Configure>", lambda event, canvas=canv: onFrameConfigure(canvas))
 
 
 
-def addcart(item,q):
+def addcart(item):
+    global cart
     if item in cart:
-        cart[item] += q
+        cart[item] += 1
     else:
-        cart[item] = q
+        cart[item] = 1
+    global welcomeMessage
+    global welcome
+    welcomeMessage.destroy()
+    welcome.destroy()
+    welcomeMessage = Label(f,text='Welcome to the Pirate Shop!',font=pirateFont2)
+    welcome = LabelFrame(f, labelwidget=welcomeMessage)
+    welcome.grid(row=0,column=1)
+
+    
+
         
 
 class forSale:
     def __init__(self,name):
         self.name = name
         self.price = item_prices[name]
-        self.row = [key for key in item_prices].index(self.name) // 3
+        self.row = ([key for key in item_prices].index(self.name) // 3) + 2
         self.col = [key for key in item_prices].index(self.name) % 3
     def place(self):
         fra = Frame(f)
@@ -127,7 +138,7 @@ class forSale:
         photo.pack()
         quantity = Spinbox(fra, from_ = 0, to_ = 1000)
         quantity.pack()
-        butt = Button(fra,text = 'Add to Carrrt', bg='black', activebackground='yellow', cursor='pirate', fg='white', activeforeground='red', image=btnskull, compound = LEFT, command = addcart(self.name,quantity.get()))
+        butt = Button(fra,text = 'Add to Carrrt', bg='black', activebackground='yellow', cursor='pirate', fg='white', activeforeground='red', image=btnskull, compound = LEFT, command = lambda: addcart(self.name))
         butt['font'] = pirateFont7
         butt.pack()
 
