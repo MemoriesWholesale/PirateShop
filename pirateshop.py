@@ -103,11 +103,11 @@ f.bind("<Configure>", lambda event, canvas=canv: onFrameConfigure(canvas))
 
 
 
-def addcart(item):
+def addcart(item,q):
     if item in cart:
-        cart[item] += 1
+        cart[item] += q
     else:
-        cart[item] = 1
+        cart[item] = q
         
 
 class forSale:
@@ -127,7 +127,7 @@ class forSale:
         photo.pack()
         quantity = Spinbox(fra, from_ = 0, to_ = 1000)
         quantity.pack()
-        butt = Button(fra,text = 'Add to Carrrt', bg='black', activebackground='yellow', cursor='pirate', fg='white', activeforeground='red', image=btnskull, compound = LEFT, command = addcart(self.name))
+        butt = Button(fra,text = 'Add to Carrrt', bg='black', activebackground='yellow', cursor='pirate', fg='white', activeforeground='red', image=btnskull, compound = LEFT, command = addcart(self.name,quantity.get()))
         butt['font'] = pirateFont7
         butt.pack()
 
