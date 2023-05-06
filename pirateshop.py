@@ -58,7 +58,7 @@ item_prices = {'Pegleg': '☩',
       
 cart = {}
 
-item_count = sum([cart[key] for key in cart])
+#item_count = sum([cart[key] for key in cart])
 
 canv = Canvas(w)
 f = Frame(canv)
@@ -76,7 +76,7 @@ welcomeMessage = Label(f,text='Welcome to the Pirate Shop!',font=pirateFont2)
 welcome = LabelFrame(f, labelwidget=welcomeMessage)
 welcome.grid(row=0,column=1)
 
-cartMessage = Label(welcome, border=5, padding=3, relief=RAISED, background='gold', font=pirateFont1, foreground='crimson', text='Ahoy! Yer Carrrt is Empty!' if item_count == 0 else 'Ahoy! Yer Carrrt Has One Item' if item_count == 1 else f'Ahoy! Yer Carrrt Has {item_count} Items!')
+cartMessage = Label(welcome, border=5, padding=3, relief=RAISED, background='gold', font=pirateFont1, foreground='crimson', text='Ahoy! Yer Carrrt is Empty!' if sum([cart[key] for key in cart]) == 0 else 'Ahoy! Yer Carrrt Has One Item!' if sum([cart[key] for key in cart]) == 1 else f'Ahoy! Yer Carrrt Has {sum([cart[key] for key in cart])} Items!')
 cartMessage.pack()
 
 menub = Menubutton(f,text='Menu')
@@ -90,7 +90,7 @@ viewCart = IntVar()
 emptyCart = IntVar()
 checkOut = IntVar()
 
-menub.menu.add_checkbutton (label = f'View Carrrt ({item_count})', variable=viewCart)
+menub.menu.add_checkbutton (label = 'View Carrrt ({sum([cart[key] for key in cart])})', variable=viewCart)
 menub.menu.add_checkbutton (label = 'Empty Carrrt', variable=emptyCart)
 menub.menu.add_checkbutton (label = 'Checkout', variable=checkOut)
 
@@ -103,20 +103,14 @@ btnskull = skull.subsample(15,15)
 
 
 
-def addcart(item):
+def addcart(item,q):
     global cart
     if item in cart:
-        cart[item] += 1
+        cart[item] += q
     else:
-        cart[item] = 1
-    global welcomeMessage
-    global welcome
-    welcomeMessage.destroy()
-    welcome.destroy()
-    welcomeMessage = Label(f,text='Welcome to the Pirate Shop!',font=pirateFont2)
-    welcome = LabelFrame(f, labelwidget=welcomeMessage)
-    welcome.grid(row=0,column=1)
-
+        cart[item] = q
+    global cartMessage
+    cartMessage.config(text='Ahoy! Yer Carrrt is Empty!' if sum([cart[key] for key in cart]) == 0 else 'Ahoy! Yer Carrrt Has One Item!' if sum([cart[key] for key in cart]) == 1 else f'Ahoy! Yer Carrrt Has {sum([cart[key] for key in cart])} Items!')
     
 
         
@@ -138,7 +132,7 @@ class forSale:
         photo.pack()
         quantity = Spinbox(fra, from_ = 0, to_ = 1000)
         quantity.pack()
-        butt = Button(fra,text = 'Add to Carrrt', bg='black', activebackground='yellow', cursor='pirate', fg='white', activeforeground='red', image=btnskull, compound = LEFT, command = lambda: addcart(self.name))
+        butt = Button(fra,text = 'Add to Carrrt', bg='black', activebackground='yellow', cursor='pirate', fg='white', activeforeground='red', image=btnskull, compound = LEFT, command = lambda: addcart(self.name,self.quantity.get()))
         butt['font'] = pirateFont7
         butt.pack()
 
