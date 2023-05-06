@@ -70,7 +70,6 @@ canv.create_window((4,4), window=f, anchor="nw")
 
 f.bind("<Configure>", lambda event, canvas=canv: onFrameConfigure(canvas))
 
-
 welcomeMessage = Label(f,text='Welcome to the Pirate Shop!',font=pirateFont2)
 
 welcome = LabelFrame(f, labelwidget=welcomeMessage)
@@ -85,23 +84,16 @@ menub.grid(row=1,column=1)
 menub.menu = Menu(menub,tearoff=0,activeforeground='red')
 menub['menu'] = menub.menu
 
-
 viewCart = IntVar()
 emptyCart = IntVar()
 checkOut = IntVar()
 
-menub.menu.add_checkbutton (label = 'View Carrrt ({sum([cart[key] for key in cart])})', variable=viewCart)
+menub.menu.add_checkbutton (label = f'View Carrrt ({sum([cart[key] for key in cart])})', variable=viewCart)
 menub.menu.add_checkbutton (label = 'Empty Carrrt', variable=emptyCart)
 menub.menu.add_checkbutton (label = 'Checkout', variable=checkOut)
 
-
-
 skull = PhotoImage(file='./piratestuff/btnskl.png')
 btnskull = skull.subsample(15,15)
-
-
-
-
 
 def addcart(item,q):
     global cart
@@ -111,9 +103,7 @@ def addcart(item,q):
         cart[item] = q
     global cartMessage
     cartMessage.config(text='Ahoy! Yer Carrrt is Empty!' if sum([cart[key] for key in cart]) == 0 else 'Ahoy! Yer Carrrt Has One Item!' if sum([cart[key] for key in cart]) == 1 else f'Ahoy! Yer Carrrt Has {sum([cart[key] for key in cart])} Items!')
-    
-
-        
+    menub.menu.entryconfigure(0,label = f'View Carrrt ({sum([cart[key] for key in cart])})', variable=emptyCart)
 
 class forSale:
     def __init__(self,name):
