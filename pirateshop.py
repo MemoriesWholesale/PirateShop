@@ -9,52 +9,52 @@ def onFrameConfigure(canvas):
 
 w = Tk()
 w.title('Pirate Shop')
-w.geometry('1250x600')
+w.geometry('1400x600')
 
-pirateFont1 = font.Font(family ='Trattatello', size=20)
-pirateFont2 = font.Font(family ='Lucida Blackletter', size=40)
+pirateFont1 = font.Font(family ='Trattatello', size=30)
+pirateFont2 = font.Font(family ='Lucida Blackletter', size=45)
 pirateFont3 = font.Font(family ='Apple Chancery', size=20)
-pirateFont4 = font.Font(family ='Baskerville Old Face', size=20)
+pirateFont4 = font.Font(family ='Baskerville Old Face', size=14)
 pirateFont5 = font.Font(family ='Cooper Black', size=20)
 pirateFont6 = font.Font(family ='Edwardian Script ITC', size=20)
 pirateFont7 = font.Font(family ='Goudy Old Style', size=20)
-pirateFont8 = font.Font(family ='Kokonor', size=20)
+pirateFont8 = font.Font(family ='Kokonor', size=14)
 pirateFont9 = font.Font(family ='Monotype Corsiva', size=20)
 pirateFont10 = font.Font(family ='Zapfino', size=20)
 pirateFont11 = font.Font(family ='Snell Roundhand', size=20)
-pirateFont12 = font.Font(family ='Savoye LET', size=20)
+pirateFont12 = font.Font(family ='Savoye LET', size=30)
 
 
-item_prices = {'Pegleg': '10.00',
-               'Eyepatch': '5.00',
-               'Hook': '25.00',
-               'Parrot': '40.00',
-               'Cutlass': '50.00',
-               'Blunderbuss': '60.00',
-               'Musket': '75.00',
-               'Gunpowder': '5.00',
-               'Cannonball': '10.00',
-               'Cannon': '200.00',
-               'Jolly Roger': '25.00',
-               'Bottle of Rum': '5.00',
-               'Barrel of Rum': '50.00',
-               'Treasure Map': '100.00',
-               'Treasure Chest': '200.00',
-               'Tricorne': '15.00',
-               'Spyglass': '20.00',
-               'Accordion': '25.00',
-               'Compass': '15.00',
-               'Pipe': '10.00',
-               'Tobacco': '5.00',
-               'Long Johns': '20.00',
-               'Jabot': '10.00',
-               'Bandana': '5.00',
-               'Plank': '15.00',
-               'Anchor': '80.00',
-               'Helm': '90.00',
-               'Sloop': '500.00',
-               'Brig': '1000.00',
-               'Galleon': '10000.00'
+item_prices = {'Pegleg': '11.95',
+               'Eyepatch': '4.99',
+               'Hook': '27.49',
+               'Parrot': '42.01',
+               'Cutlass': '49.99',
+               'Blunderbuss': '54.95',
+               'Musket': '79.99',
+               'Gunpowder': '1.99',
+               'Cannonball': '12.05',
+               'Cannon': '199.95',
+               'Jolly Roger': '26.49',
+               'Bottle of Rum': '5.99',
+               'Barrel of Rum': '59.99',
+               'Treasure Map': '105.95',
+               'Treasure Chest': '195.99',
+               'Compass': '12.49',
+               'Spyglass': '19.99',
+               'Accordion': '26.49',
+               'Pipe': '14.99',
+               'Tobacco': '1.05',
+               'Long Johns': '12.95',
+               'Tricorne': '22.99',
+               'Jabot': '9.99',
+               'Bandana': '4.49',
+               'Plank': '16.95',
+               'Anchor': '78.95',
+               'Helm': '88.99',
+               'Sloop': '505.45',
+               'Brig': '995.95',
+               'Galleon': '9999.99'
                }
       
 cart = {}
@@ -69,7 +69,7 @@ canv.create_window((4,4), window=f, anchor="nw")
 
 f.bind("<Configure>", lambda event, canvas=canv: onFrameConfigure(canvas))
 
-welcomeMessage = Label(f,text='Welcome to the Pirate Shop!',font=pirateFont2)
+welcomeMessage = Label(f,text='Welcome to the Pirate Shop!',font=pirateFont2,padding=10)
 
 welcome = LabelFrame(f, labelwidget=welcomeMessage)
 welcome.grid(row=0,column=1)
@@ -80,7 +80,7 @@ cartMessage.pack()
 menub = Menubutton(f,text='Menu')
 menub.grid(row=1,column=1)
 
-menub.menu = Menu(menub,tearoff=0,activeforeground='red')
+menub.menu = Menu(menub,tearoff=0,activeforeground='red',font=pirateFont8)
 menub['menu'] = menub.menu
 
 viewCart = IntVar()
@@ -92,7 +92,7 @@ def updatemessage():
     update.geometry('200x100')
     updateframe = Frame(update)
     updateframe.pack()
-    updatelab = Label(updateframe,text='Yer Items Arrr Now Updated!')
+    updatelab = Label(updateframe,text='Yer Items Arrr Now Updated!',font=pirateFont4)
     updatelab.pack()
     updateok = Button(updateframe,text='Aye-aye',command=lambda:update.destroy())
     updateok.pack()
@@ -109,7 +109,7 @@ def updatequantity(item,q):
 def checkout():
     receipt = Toplevel()
     receipt.title('Thank You for Visiting the Pirate Shop!')
-    receipt.geometry('400x400')
+    receipt.geometry('800x400')
     rf = Frame(receipt)
     rf.pack()
     class checkoutItem:
@@ -120,13 +120,13 @@ def checkout():
         def tally(self):
             tallyframe = Frame(rf)
             tallyframe.pack()
-            tallylab = Label(tallyframe,text=f'{self.number} x {self.name} at ☩{self.price} each, for a total of ☩ {self.number*float(self.price):.2f}')
+            tallylab = Label(tallyframe,text=f'{self.number} x {self.name} at ☩{self.price} each, for a total of ☩{self.number*float(self.price):.2f}',font=pirateFont12)
             tallylab.pack()
     for key in cart:
         tallyitem = checkoutItem(key)
         tallyitem.tally()
     total = '%.2f'%(sum([float(item_prices[key]) * cart[key] for key in cart]))
-    grandtotal = Label(rf,text=f'For a Grand Total of {total[:-3]} Doubloons and {total[-2:]} cents' if len(cart) else 'Your Carrrt is Empty!')
+    grandtotal = Label(rf,text=f'For a Grand Total of {total[:-3]} Doubloons and {total[-2:]} cents' if len(cart) else 'Yer Carrrt is Empty!',font=pirateFont10)
     grandtotal.pack()
 
 def cartview():
@@ -141,7 +141,7 @@ def cartview():
         def listItem(self):
             itemframe = Frame(cartframe)
             itemframe.pack()
-            itemlabel = Label(itemframe,text=self.name)
+            itemlabel = Label(itemframe,text=self.name,font=pirateFont9)
             itemlabel.pack(side=LEFT)
             quantity = Spinbox(itemframe, from_ = 0, to_ = 99999)
             quantity.insert(0,cart[self.name])
@@ -153,13 +153,13 @@ def cartview():
         cartitem.listItem()
     readycheck = Frame(cartframe)
     readycheck.pack()
-    readymsg = Label(readycheck, text='Arrr You Ready to Check Out?')
+    readymsg = Label(readycheck, text='Arrr Ye Ready to Check Out?',font=pirateFont4)
     readymsg.pack(side=LEFT)
     checkoutnow = Button(readycheck, text='Check Out', command=lambda:checkout())
     checkoutnow.pack(side=RIGHT)
     continueshopping = Frame(cartframe)
     continueshopping.pack()
-    continuelab = Label(continueshopping, text ='Or Do You Want To...')
+    continuelab = Label(continueshopping, text ='Or Do Ye Want To...',font=pirateFont4)
     continuelab.pack(side=LEFT)
     continuebtn = Button(continueshopping, text = 'Keep Shopping!', command = lambda:cartViewer.destroy())
     continuebtn.pack()
@@ -170,7 +170,7 @@ def emptymessage():
     emptiness.geometry('200x100')
     emptyframe = Frame(emptiness)
     emptyframe.pack()
-    emptylab = Label(emptyframe, text = 'Yer Carrrt Has Been Emptied!')
+    emptylab = Label(emptyframe, text = 'Yer Carrrt Has Been Emptied!', font=pirateFont4)
     emptylab.pack()
     emptyok = Button(emptyframe,text='Aye-aye',command=lambda:emptiness.destroy())
     emptyok.pack()
@@ -181,7 +181,7 @@ def cartempty():
     warning.geometry('200x100')
     warningframe = Frame(warning)
     warningframe.pack()
-    warninglab = Label(warningframe, text='Arrr Ye Sure, Ye Scalawag?')
+    warninglab = Label(warningframe, text='Arrr Ye Sure, Ye Scalawag??',font=pirateFont4)
     warninglab.pack()
     def reallyempty():
         global cart
@@ -206,7 +206,7 @@ btnskull = skull.subsample(15,15)
 def addcart(item,q):
     if item in cart:
         cart[item] += q
-    else:
+    elif q > 0:
         cart[item] = q
     cartMessage.config(text='Ahoy! Yer Carrrt is Empty!' if sum([cart[key] for key in cart]) == 0 else 'Ahoy! Yer Carrrt Has One Item!' if sum([cart[key] for key in cart]) == 1 else f'Ahoy! Yer Carrrt Has {sum([cart[key] for key in cart])} Items!')
     menub.menu.entryconfigure(0,label = f'View Carrrt ({sum([cart[key] for key in cart])})', variable=emptyCart)
@@ -215,7 +215,7 @@ def addcart(item,q):
     admsg.title('Added!')
     addframe = Frame(admsg)
     addframe.pack()
-    addlab = Label(addframe,text = f'{q} x {item} Added To Yer Carrrt!')
+    addlab = Label(addframe,text = f'{q} x {item} Added To Yer Carrrt!',font=pirateFont4)
     addlab.pack()
     adbtn = Button(addframe,text = 'Aye-aye',command=lambda:admsg.destroy())
     adbtn.pack()
@@ -232,8 +232,8 @@ class forSale:
         fra = Frame(f, borderwidth=5, padding=10, relief=RIDGE)
         fra.grid(row = self.row, column = self.col,pady=10)
         pic = PhotoImage(file=f"./piratestuff/{''.join((self.name).lower().split())}.png")
-        lab = Label(fra,text=f"{self.name} for only ☩{self.price}",relief=GROOVE,foreground='light goldenrod')
-        lab['font'] = pirateFont8
+        lab = Label(fra,text=f"{self.name} for just... \t ☩{self.price} !!",relief=GROOVE,foreground='light goldenrod')
+        lab['font'] = pirateFont3
         lab.pack()
         photo = Button(fra,height=320,width=320,image=pic)
         photo.pack()
