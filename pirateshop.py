@@ -24,36 +24,36 @@ pirateFont11 = font.Font(family ='Snell Roundhand', size=20)
 pirateFont12 = font.Font(family ='Savoye LET', size=20)
 
 
-item_prices = {'Pegleg': '☩',
-               'Eyepatch': '☩',
-               'Hook': '☩',
-               'Parrot': '☩',
-               'Cutlass': '☩',
-               'Blunderbuss': '☩',
-               'Musket': '☩',
-               'Gunpowder': '☩',
-               'Cannonball': '☩',
-               'Cannon': '☩',
-               'Jolly Roger': '☩',
-               'Bottle of Rum': '☩',
-               'Barrel of Rum': '☩',
-               'Treasure Map': '☩',
-               'Treasure Chest': '☩',
-               'Tricorne': '☩',
-               'Spyglass': '☩',
-               'Accordion': '☩',
-               'Compass': '☩',
-               'Pipe': '☩',
-               'Tobacco': '☩',
-               'Long Johns': '☩',
-               'Jabot': '☩',
-               'Bandana': '☩',
-               'Plank': '☩',
-               'Anchor': '☩',
-               'Helm': '☩',
-               'Sloop': '☩',
-               'Brig': '☩',
-               'Galleon': '☩'
+item_prices = {'Pegleg': '',
+               'Eyepatch': '',
+               'Hook': '',
+               'Parrot': '',
+               'Cutlass': '',
+               'Blunderbuss': '',
+               'Musket': '',
+               'Gunpowder': '',
+               'Cannonball': '',
+               'Cannon': '',
+               'Jolly Roger': '',
+               'Bottle of Rum': '',
+               'Barrel of Rum': '',
+               'Treasure Map': '',
+               'Treasure Chest': '',
+               'Tricorne': '',
+               'Spyglass': '',
+               'Accordion': '',
+               'Compass': '',
+               'Pipe': '',
+               'Tobacco': '',
+               'Long Johns': '',
+               'Jabot': '',
+               'Bandana': '',
+               'Plank': '',
+               'Anchor': '',
+               'Helm': '',
+               'Sloop': '',
+               'Brig': '',
+               'Galleon': ''
                }
       
 cart = {}
@@ -86,20 +86,75 @@ viewCart = IntVar()
 emptyCart = IntVar()
 checkOut = IntVar()
 
+def updatequantity(item,q):
+    if q == 0:
+        cart.__delitem__(item)
+    else:
+        cart[item] = q
+    cartMessage.config(text='Ahoy! Yer Carrrt is Empty!' if sum([cart[key] for key in cart]) == 0 else 'Ahoy! Yer Carrrt Has One Item!' if sum([cart[key] for key in cart]) == 1 else f'Ahoy! Yer Carrrt Has {sum([cart[key] for key in cart])} Items!')
+    menub.menu.entryconfigure(0,label = f'View Carrrt ({sum([cart[key] for key in cart])})', variable=emptyCart)
+
+def checkout():
+    receipt = Toplevel()
+    receipt.title('Thank You for Visiting the Pirate Shop!')
+    rf = Frame(receipt)
+    rf.pack()
+    class checkoutItem:
+        def __init__(self,name):
+            self.name = name
+            self.price = item_prices[name]
+            self.number = cart[name]
+        def tally(self):
+            tallyframe = Frame(rf)
+            tallyframe.pack()
+            tallylab = Label(tallyframe,text=f'{self.number} x {self.name} for ☩{self.price} each, for a total of ☩')
+            tallylab.pack()
+    for key in cart:
+        tallyitem = checkoutItem(key)
+        tallyitem.tally()
+
 def cartview():
     cartViewer = Toplevel()
     cartViewer.title('Yer Carrrt')
+    cartframe = Frame(cartViewer)
+    cartframe.pack()
+    class cartItem:
+        def __init__(self,name):
+            self.name = name
+        def listItem(self):
+            itemframe = Frame(cartframe)
+            itemframe.pack()
+            itemlabel = Label(itemframe,text=self.name)
+            itemlabel.pack(side=LEFT)
+            quantity = Spinbox(itemframe, from_ = 0, to_ = 99999)
+            quantity.insert(0,cart[self.name])
+            update = Button(itemframe,text='Update Quantity',command=lambda:updatequantity(self.name,int(quantity.get())))
+            update.pack(side=RIGHT)
+            quantity.pack(side=RIGHT)
+    for key in cart:
+        cartitem = cartItem(key)
+        cartitem.listItem()
+    readycheck = Frame(cartframe)
+    readycheck.pack()
+    readymsg = Label(readycheck, text='Arrr You Ready to Check Out?')
+    readymsg.pack(side=LEFT)
+    checkoutnow = Button(readycheck, text='Check Out', command=lambda:checkout())
+    checkoutnow.pack(side=RIGHT)
+    continueshopping = Frame(cartframe)
+    continueshopping.pack()
+    continuelab = Label(continueshopping, text ='Or Do You Want To...')
+    continuelab.pack(side=LEFT)
+    continuebtn = Button(continueshopping, text = 'Keep Shopping!', command = lambda:cartViewer.destroy())
+    continuebtn.pack()
+
+        
 
 def cartempty():
     pass
-    
-def checkout():
-    pass
 
-
-menub.menu.add_checkbutton (label = f'View Carrrt ({sum([cart[key] for key in cart])})', variable=viewCart, command=lambda:cartview())
-menub.menu.add_checkbutton (label = 'Empty Carrrt', variable=emptyCart)
-menub.menu.add_checkbutton (label = 'Checkout', variable=checkOut)
+menub.menu.add_checkbutton (label = f'View Carrrt ({sum([cart[key] for key in cart])})', command=lambda:cartview())
+menub.menu.add_command (label = 'Empty Carrrt')
+menub.menu.add_command (label = 'Checkout', command=lambda:checkout())
 
 skull = PhotoImage(file='./piratestuff/btnskl.png')
 btnskull = skull.subsample(15,15)
@@ -122,7 +177,7 @@ class forSale:
         fra = Frame(f, borderwidth=5, padding=10, relief=RIDGE)
         fra.grid(row = self.row, column = self.col,pady=10)
         pic = PhotoImage(file=f"./piratestuff/{''.join((self.name).lower().split())}.png")
-        lab = Label(fra,text=f"{self.name} for only {self.price}",relief=GROOVE,foreground='light goldenrod')
+        lab = Label(fra,text=f"{self.name} for only ☩{self.price}",relief=GROOVE,foreground='light goldenrod')
         lab['font'] = pirateFont8
         lab.pack()
         photo = Button(fra,height=320,width=320,image=pic)
