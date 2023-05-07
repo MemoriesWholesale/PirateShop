@@ -203,7 +203,7 @@ skull = PhotoImage(file='./piratestuff/btnskl.png')
 btnskull = skull.subsample(15,15)
 
 
-def addcart(item,q):
+"""def addcart(item,q):
     if item in cart:
         cart[item] += q
     elif q > 0:
@@ -218,7 +218,7 @@ def addcart(item,q):
     addlab = Label(addframe,text = f'{q} x {item} Added To Yer Carrrt!',font=pirateFont4)
     addlab.pack()
     adbtn = Button(addframe,text = 'Aye-aye',command=lambda:admsg.destroy())
-    adbtn.pack()
+    adbtn.pack()"""
 
 
 
@@ -232,14 +232,31 @@ class forSale:
         fra = Frame(f, borderwidth=5, padding=10, relief=RIDGE)
         fra.grid(row = self.row, column = self.col,pady=10)
         pic = PhotoImage(file=f"./piratestuff/{''.join((self.name).lower().split())}.png")
-        lab = Label(fra,text=f"{self.name} for just... \t ☩{self.price} !!",relief=GROOVE,foreground='light goldenrod')
-        lab['font'] = pirateFont3
+        lab = Label(fra,text=f"{self.name} for just... \t ☩{self.price} !!",relief=GROOVE,foreground='light goldenrod',font=pirateFont3)
         lab.pack()
         photo = Button(fra,height=320,width=320,image=pic)
         photo.pack()
         quantity = Spinbox(fra, from_ = 0, to_ = 99999)
         quantity.insert(0,0)
         quantity.pack()
+        def addcart(item,q):
+            if item in cart:
+                cart[item] += q
+            elif q > 0:
+                cart[item] = q
+            cartMessage.config(text='Ahoy! Yer Carrrt is Empty!' if sum([cart[key] for key in cart]) == 0 else 'Ahoy! Yer Carrrt Has One Item!' if sum([cart[key] for key in cart]) == 1 else f'Ahoy! Yer Carrrt Has {sum([cart[key] for key in cart])} Items!')
+            menub.menu.entryconfigure(0,label = f'View Carrrt ({sum([cart[key] for key in cart])})', variable=emptyCart)
+            admsg = Toplevel()
+            admsg.geometry('300x100')
+            admsg.title('Added!')
+            addframe = Frame(admsg)
+            addframe.pack()
+            addlab = Label(addframe,text = f'{q} x {item} Added To Yer Carrrt!',font=pirateFont4)
+            addlab.pack()
+            adbtn = Button(addframe,text = 'Aye-aye',command=lambda:admsg.destroy())
+            adbtn.pack()
+            quantity.delete(0,len(quantity.get()))
+            quantity.insert(0,0)
         butt = Button(fra,text = 'Add to Carrrt', bg='black', activebackground='yellow', cursor='pirate', fg='white', activeforeground='red', image=btnskull, compound = LEFT, command = lambda: addcart(self.name, int(quantity.get())))
         butt['font'] = pirateFont7
         butt.pack()
