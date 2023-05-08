@@ -203,23 +203,6 @@ skull = PhotoImage(file='./piratestuff/btnskl.png')
 btnskull = skull.subsample(15,15)
 
 
-"""def addcart(item,q):
-    if item in cart:
-        cart[item] += q
-    elif q > 0:
-        cart[item] = q
-    cartMessage.config(text='Ahoy! Yer Carrrt is Empty!' if sum([cart[key] for key in cart]) == 0 else 'Ahoy! Yer Carrrt Has One Item!' if sum([cart[key] for key in cart]) == 1 else f'Ahoy! Yer Carrrt Has {sum([cart[key] for key in cart])} Items!')
-    menub.menu.entryconfigure(0,label = f'View Carrrt ({sum([cart[key] for key in cart])})', variable=emptyCart)
-    admsg = Toplevel()
-    admsg.geometry('300x100')
-    admsg.title('Added!')
-    addframe = Frame(admsg)
-    addframe.pack()
-    addlab = Label(addframe,text = f'{q} x {item} Added To Yer Carrrt!',font=pirateFont4)
-    addlab.pack()
-    adbtn = Button(addframe,text = 'Aye-aye',command=lambda:admsg.destroy())
-    adbtn.pack()"""
-
 
 
 class forSale:
